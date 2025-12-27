@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS contacts (
 );
 
 -- Create indexes for efficient contact lookups
-CREATE INDEX idx_contacts_user ON contacts(user_id);
-CREATE INDEX idx_contacts_status ON contacts(user_id, status);
-CREATE INDEX idx_contacts_contact_user ON contacts(contact_user_id);
+CREATE INDEX IF NOT EXISTS idx_contacts_user ON contacts(user_id);
+CREATE INDEX IF NOT EXISTS idx_contacts_status ON contacts(user_id, status);
+CREATE INDEX IF NOT EXISTS idx_contacts_contact_user ON contacts(contact_user_id);

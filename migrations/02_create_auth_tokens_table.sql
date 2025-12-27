@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
 );
 
 -- Create indexes for efficient token lookups
-CREATE INDEX idx_tokens_user_id ON auth_tokens(user_id);
-CREATE INDEX idx_tokens_expires_at ON auth_tokens(expires_at);
-CREATE INDEX idx_tokens_revoked ON auth_tokens(revoked);
+CREATE INDEX IF NOT EXISTS idx_tokens_user_id ON auth_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_tokens_expires_at ON auth_tokens(expires_at);
+CREATE INDEX IF NOT EXISTS idx_tokens_revoked ON auth_tokens(revoked);

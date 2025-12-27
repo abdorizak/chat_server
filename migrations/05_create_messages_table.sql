@@ -13,6 +13,6 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 -- Create indexes for efficient message queries
-CREATE INDEX idx_messages_conversation ON messages(conversation_id, sent_at DESC);
-CREATE INDEX idx_messages_sender ON messages(sender_id);
-CREATE INDEX idx_messages_sent_at ON messages(sent_at DESC);
+CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(conversation_id, sent_at DESC);
+CREATE INDEX IF NOT EXISTS idx_messages_sender ON messages(sender_id);
+CREATE INDEX IF NOT EXISTS idx_messages_sent_at ON messages(sent_at DESC);

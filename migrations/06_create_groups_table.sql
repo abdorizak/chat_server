@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS groups (
 );
 
 -- Create indexes
-CREATE INDEX idx_groups_created_by ON groups(created_by);
-CREATE INDEX idx_groups_is_active ON groups(is_active);
+CREATE INDEX IF NOT EXISTS idx_groups_created_by ON groups(created_by);
+CREATE INDEX IF NOT EXISTS idx_groups_is_active ON groups(is_active);

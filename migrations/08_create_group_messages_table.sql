@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS group_messages (
 );
 
 -- Create indexes for efficient message queries
-CREATE INDEX idx_group_messages_group ON group_messages(group_id, sent_at DESC);
-CREATE INDEX idx_group_messages_sender ON group_messages(sender_id);
-CREATE INDEX idx_group_messages_sent_at ON group_messages(sent_at DESC);
+CREATE INDEX IF NOT EXISTS idx_group_messages_group ON group_messages(group_id, sent_at DESC);
+CREATE INDEX IF NOT EXISTS idx_group_messages_sender ON group_messages(sender_id);
+CREATE INDEX IF NOT EXISTS idx_group_messages_sent_at ON group_messages(sent_at DESC);

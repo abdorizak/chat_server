@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS group_members (
 );
 
 -- Create indexes for efficient queries
-CREATE INDEX idx_group_members_group ON group_members(group_id);
-CREATE INDEX idx_group_members_user ON group_members(user_id);
-CREATE INDEX idx_group_members_role ON group_members(group_id, role);
+CREATE INDEX IF NOT EXISTS idx_group_members_group ON group_members(group_id);
+CREATE INDEX IF NOT EXISTS idx_group_members_user ON group_members(user_id);
+CREATE INDEX IF NOT EXISTS idx_group_members_role ON group_members(group_id, role);

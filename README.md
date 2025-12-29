@@ -6,9 +6,16 @@ A real-time chat application built with Rust, featuring WebSocket support, Postg
 
 - ✅ **User Authentication** - Register, login with JWT tokens
 - ✅ **Friend Management** - Add friends, send/accept friend requests
-- 📝 **1-to-1 Chat** - Direct messaging between users
-- 👥 **Group Chat** - Create groups, add friends, group messaging
-- 🔄 **Real-time** - WebSocket support for instant message delivery
+- ✅ **1-to-1 Chat** - Direct messaging between users
+- ✅ **Group Chat** - Create groups, add friends, group messaging
+- ✅ **User Authentication** - Register, login with JWT tokens
+- ✅ **Friend Management** - Add friends, send/accept friend requests
+- ✅ **1-to-1 Chat** - Direct messaging between users
+- ✅ **Group Chat** - Create groups, add friends, group messaging
+- ✅ **Real-time** - WebSocket support for instant message delivery
+- ✅ **Message History** - Pagination and storage
+- ✅ **Typing Indicators** - Real-time ephemeral typing status
+- ✅ **Read Receipts** - Message read status updates
 - 🐳 **Docker Ready** - Full Docker and docker-compose configuration
 - 🗄️ **PostgreSQL** - Robust database with migrations
 
@@ -164,13 +171,17 @@ cargo fmt
 
 This is a learning project. Upcoming features:
 
-- [ ] Complete WebSocket implementation
-- [ ] Friend management endpoints
-- [ ] 1-to-1 chat endpoints
-- [ ] Group chat functionality
-- [ ] Message history and pagination
-- [ ] Read receipts
-- [ ] Typing indicators
+- [x] Complete WebSocket implementation
+- [x] Friend management endpoints
+- [x] 1-to-1 chat endpoints
+- [x] Group chat functionality
+- [x] Complete WebSocket implementation
+- [x] Friend management endpoints
+- [x] 1-to-1 chat endpoints
+- [x] Group chat functionality
+- [x] Message history and pagination
+- [x] **Read receipts**
+- [x] **Typing indicators**
 - [ ] File uploads
 - [ ] Frontend client
 

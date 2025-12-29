@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS contacts (
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     contact_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     status VARCHAR(20) DEFAULT 'pending', -- pending, accepted, blocked
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(user_id, contact_user_id),
     CHECK (user_id != contact_user_id)
 );

@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     token_hash VARCHAR(255) NOT NULL,
     refresh_token_hash VARCHAR(255),
-    expires_at TIMESTAMP NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     revoked BOOLEAN DEFAULT false,
     device_info VARCHAR(255)
 );

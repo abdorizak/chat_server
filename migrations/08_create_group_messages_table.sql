@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS group_messages (
     sender_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     content TEXT NOT NULL,
     message_type VARCHAR(20) DEFAULT 'text',
-    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sent_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     edited BOOLEAN DEFAULT false,
     deleted BOOLEAN DEFAULT false
 );

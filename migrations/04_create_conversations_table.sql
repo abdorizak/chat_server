@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS conversations (
     id SERIAL PRIMARY KEY,
     participant_1 INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     participant_2 INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(participant_1, participant_2),
     CHECK (participant_1 < participant_2)
 );

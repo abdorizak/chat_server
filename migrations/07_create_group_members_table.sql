@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS group_members (
     group_id INTEGER NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     role VARCHAR(20) DEFAULT 'member', -- admin, moderator, member
-    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_read_at TIMESTAMP,
+    joined_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    last_read_at TIMESTAMPTZ,
     UNIQUE(group_id, user_id)
 );
 

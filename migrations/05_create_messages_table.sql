@@ -5,9 +5,9 @@ CREATE TABLE IF NOT EXISTS messages (
     sender_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     content TEXT NOT NULL,
     message_type VARCHAR(20) DEFAULT 'text', -- text, image, file, etc.
-    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    delivered_at TIMESTAMP,
-    read_at TIMESTAMP,
+    sent_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    delivered_at TIMESTAMPTZ,
+    read_at TIMESTAMPTZ,
     edited BOOLEAN DEFAULT false,
     deleted BOOLEAN DEFAULT false
 );

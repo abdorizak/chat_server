@@ -129,8 +129,8 @@ impl MessageRepository {
 
         // 1. Create Group
         let group_row = transaction.query_one(
-            "INSERT INTO groups (name, description, creator_id) VALUES ($1, $2, $3) 
-             RETURNING id, name, description, creator_id, created_at",
+            "INSERT INTO groups (name, description, created_by) VALUES ($1, $2, $3) 
+             RETURNING id, name, description, created_by, created_at",
             &[&name, &description, &creator_id]
         ).await?;
         
@@ -173,7 +173,7 @@ impl MessageRepository {
         let client = pool.get().await?;
 
         let rows = client.query(
-            "SELECT g.id, g.name, g.description, g.creator_id, g.created_at
+            "SELECT g.id, g.name, g.description, g.created_by, g.created_at
              FROM groups g
              JOIN group_members gm ON g.id = gm.group_id
              WHERE gm.user_id = $1

@@ -29,7 +29,7 @@ impl ContactRepository {
 
         // 2. Check existing relationship
         let existing = client.query_opt(
-            "SELECT status FROM contacts WHERE user_id = $1 AND contact_id = $2",
+            "SELECT status FROM contacts WHERE user_id = $1 AND contact_user_id = $2",
             &[&user_id, &contact_id],
         ).await?;
 
@@ -46,7 +46,7 @@ impl ContactRepository {
 
         // 3. Insert Pending Request
         client.execute(
-            "INSERT INTO contacts (user_id, contact_id, status, created_at, updated_at) 
+            "INSERT INTO contacts (user_id, contact_user_id, status, created_at, updated_at) 
              VALUES ($1, $2, 'pending', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
             &[&user_id, &contact_id],
         ).await?;
@@ -69,7 +69,7 @@ impl ContactRepository {
         // So B (user_id) accepts A (contact_id) -> We look for Row(contact_id, user_id, pending)
         
         let request = transaction.query_opt(
-            "SELECT status FROM contacts WHERE user_id = $1 AND contact_id = $2",
+            "SELECT status FROM contacts WHERE user_id = $1 AND contact_user_id = $2",
             &[&contact_id, &user_id]
         ).await?;
 
@@ -85,15 +85,15 @@ impl ContactRepository {
         // 2. Update their row to accepted
         transaction.execute(
             "UPDATE contacts SET status = 'accepted', updated_at = CURRENT_TIMESTAMP 
-             WHERE user_id = $1 AND contact_id = $2",
+             WHERE user_id = $1 AND contact_user_id = $2",
              &[&contact_id, &user_id]
         ).await?;
 
         // 3. Insert/Update MY row to accepted (Bidirectional)
         transaction.execute(
-            "INSERT INTO contacts (user_id, contact_id, status, created_at, updated_at)
+            "INSERT INTO contacts (user_id, contact_user_id, status, created_at, updated_at)
              VALUES ($1, $2, 'accepted', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-             ON CONFLICT (user_id, contact_id) 
+             ON CONFLICT (user_id, contact_user_id) 
              DO UPDATE SET status = 'accepted', updated_at = CURRENT_TIMESTAMP",
              &[&user_id, &contact_id]
         ).await?;
@@ -111,10 +111,10 @@ impl ContactRepository {
         let client = pool.get().await?;
 
         let rows = client.query(
-            "SELECT c.user_id, c.contact_id, c.status, c.created_at, c.updated_at,
+            "SELECT c.user_id, c.contact_user_id, c.status, c.created_at, c.updated_at,
                     u.username, u.email, u.first_name, u.last_name, u.is_active
              FROM contacts c
-             JOIN users u ON c.contact_id = u.id
+             JOIN users u ON c.contact_user_id = u.id
              WHERE c.user_id = $1 AND c.status = 'accepted'",
             &[&user_id]
         ).await?;
@@ -146,11 +146,11 @@ impl ContactRepository {
 
         // Look for rows where I am the contact_id and status is pending
         let rows = client.query(
-            "SELECT c.user_id, c.contact_id, c.status, c.created_at, c.updated_at,
+            "SELECT c.user_id, c.contact_user_id, c.status, c.created_at, c.updated_at,
                     u.username, u.email, u.first_name, u.last_name, u.is_active
              FROM contacts c
              JOIN users u ON c.user_id = u.id
-             WHERE c.contact_id = $1 AND c.status = 'pending'",
+             WHERE c.contact_user_id = $1 AND c.status = 'pending'",
             &[&user_id]
         ).await?;
 

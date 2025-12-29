@@ -60,6 +60,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(chat_server_data.clone())
             .wrap(middleware::Logger::default())
             .wrap(cors)
+            .wrap(modules::auth::AuthMiddleware)
             .service(
                 web::scope("/api")
                     .configure(modules::configure_auth)

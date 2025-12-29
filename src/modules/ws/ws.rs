@@ -118,6 +118,44 @@ pub async fn start_connection(
                                             }
                                         }
                                     }
+                                    WsMessage::Typing { conversation_id, group_id, is_typing } => {
+                                        // 1. Group Typing
+                                        if let Some(g_id) = group_id {
+                                            if let Ok(members) = MessageRepository::get_group_members(&pool, g_id).await {
+                                                let payload = serde_json::to_string(&WsMessage::Typing {
+                                                    conversation_id: None,
+                                                    group_id: Some(g_id),
+                                                    is_typing,
+                                                }).unwrap_or_default();
+                                                
+                                                let recipients: Vec<i32> = members.into_iter().filter(|&id| id != user_id).collect();
+                                                srv.broadcast(&recipients, &payload).await;
+                                            }
+                                        }
+                                        // 2. 1-to-1 Typing
+                                        else if let Some(c_id) = conversation_id {
+                                             if let Ok(Some(partner_id)) = MessageRepository::get_conversation_partner(&pool, c_id, user_id).await {
+                                                 let payload = serde_json::to_string(&WsMessage::Typing {
+                                                    conversation_id: Some(c_id),
+                                                    group_id: None,
+                                                    is_typing,
+                                                }).unwrap_or_default();
+                                                
+                                                srv.send_message(partner_id, &payload).await;
+                                             }
+                                        }
+                                    },
+                                    WsMessage::MessageRead { message_id } => {
+                                        // 1. Mark in DB
+                                        if let Ok(Some(sender_id)) = MessageRepository::mark_message_read(&pool, message_id, user_id).await {
+                                            // 2. Notify Sender
+                                            let payload = serde_json::to_string(&WsMessage::MessageRead {
+                                                message_id
+                                            }).unwrap_or_default();
+                                            
+                                            srv.send_message(sender_id, &payload).await;
+                                        }
+                                    },
                                     _ => {}
                                 }
                             }

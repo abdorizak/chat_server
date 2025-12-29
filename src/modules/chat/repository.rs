@@ -243,5 +243,55 @@ impl MessageRepository {
 
         Ok(rows.iter().map(|r| r.get(0)).collect())
     }
+    /// Get the other participant in a conversation
+    pub async fn get_conversation_partner(
+        pool: &DbPool,
+        conversation_id: i32,
+        my_user_id: i32,
+    ) -> Result<Option<i32>, Box<dyn std::error::Error>> {
+        let client = pool.get().await?;
+
+        let row = client.query_opt(
+            "SELECT participant_1, participant_2 FROM conversations WHERE id = $1",
+            &[&conversation_id]
+        ).await?;
+
+        if let Some(r) = row {
+            let p1: i32 = r.get(0);
+            let p2: i32 = r.get(1);
+            
+            if p1 == my_user_id {
+                return Ok(Some(p2));
+            } else if p2 == my_user_id {
+                return Ok(Some(p1));
+            }
+        }
+
+        Ok(None)
+    }
+
+    /// Mark a message as read and return the sender_id (to notify them)
+    pub async fn mark_message_read(
+        pool: &DbPool,
+        message_id: i32,
+        _reader_id: i32, // potentially used for verification
+    ) -> Result<Option<i32>, Box<dyn std::error::Error>> {
+        let client = pool.get().await?;
+
+        // Update read_at if not already set
+        // return sender_id so we can notify them
+        let row = client.query_opt(
+            "UPDATE messages 
+             SET read_at = NOW() 
+             WHERE id = $1 AND read_at IS NULL 
+             RETURNING sender_id",
+            &[&message_id]
+        ).await?;
+
+        match row {
+            Some(r) => Ok(Some(r.get(0))),
+            None => Ok(None) // Already read or not found
+        }
+    }
 }
 

@@ -158,4 +158,20 @@ impl AuthRepository {
 
         Ok(())
     }
+    /// Revoke auth token
+    pub async fn revoke_token(
+        pool: &DbPool,
+        token_hash: &str,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let client = pool.get().await?;
+
+        client
+            .execute(
+                "UPDATE auth_tokens SET revoked = true WHERE token_hash = $1",
+                &[&token_hash],
+            )
+            .await?;
+
+        Ok(())
+    }
 }

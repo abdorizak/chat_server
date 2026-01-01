@@ -76,12 +76,35 @@ pub async fn get_current_user(
     }
 }
 
+/// POST /api/auth/logout - Logout user
+pub async fn logout(
+    pool: web::Data<DbPool>,
+    req: HttpRequest,
+) -> HttpResponse {
+    if let Some(auth_header) = req.headers().get("Authorization") {
+        if let Ok(auth_str) = auth_header.to_str() {
+            if auth_str.starts_with("Bearer ") {
+                let token = &auth_str[7..];
+                match AuthService::logout(&pool, token).await {
+                    Ok(_) => return ApiResponse::success_no_data("Logged out successfully"),
+                    Err(e) => {
+                        log::error!("Logout error: {}", e);
+                        return ErrorResponse::internal_error("Failed to logout");
+                    }
+                }
+            }
+        }
+    }
+    ErrorResponse::unauthorized("No token provided")
+}
+
 /// Configure auth routes
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/auth")
             .route("/register", web::post().to(register))
             .route("/login", web::post().to(login))
+            .route("/logout", web::post().to(logout))
             .route("/me", web::get().to(get_current_user)),
     );
 }

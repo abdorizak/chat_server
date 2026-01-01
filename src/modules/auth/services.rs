@@ -107,11 +107,21 @@ impl AuthService {
         })
     }
 
-    /// Get user by ID
     pub async fn get_user_by_id(
         pool: &DbPool,
         user_id: i32,
     ) -> Result<Option<User>, Box<dyn std::error::Error>> {
         AuthRepository::find_by_id(pool, user_id).await
+    }
+
+    /// Logout user (invalidate token)
+    pub async fn logout(
+        pool: &DbPool,
+        token: &str,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        // We hash the token to find it in the DB, as we store hashed tokens
+        let token_hash = hash_password(token)?;
+        AuthRepository::revoke_token(pool, &token_hash).await?;
+        Ok(())
     }
 }

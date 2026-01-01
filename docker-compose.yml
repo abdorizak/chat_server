@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: chatpass
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./migrations:/docker-entrypoint-initdb.d
+      # - ./migrations:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     healthcheck:
@@ -35,6 +35,7 @@ services:
       REFRESH_TOKEN_EXPIRATION: 2592000
       RUST_LOG: info
       ENVIRONMENT: production
+      RUN_MIGRATIONS: "false" # skip if you don't want to run migrations, set true if you want to run migrations
     depends_on:
       postgres:
         condition: service_healthy

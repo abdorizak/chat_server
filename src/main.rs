@@ -31,12 +31,20 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to create database pool");
 
-    // Run migrations
-    db::run_migrations(&pool)
-        .await
-        .expect("Failed to run database migrations");
+    // Run migrations if enabled
+    let run_migrations = env::var("RUN_MIGRATIONS")
+        .unwrap_or_else(|_| "true".to_string())
+        .parse::<bool>()
+        .unwrap_or(true);
 
-    log::info!("Database migrations completed");
+    if run_migrations {
+        db::run_migrations(&pool)
+            .await
+            .expect("Failed to run database migrations");
+        log::info!("Database migrations completed");
+    } else {
+        log::info!("Skipping database migrations (RUN_MIGRATIONS=false)");
+    }
 
     // Create pool data
     let pool_data = web::Data::new(pool);

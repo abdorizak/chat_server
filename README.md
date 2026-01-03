@@ -16,7 +16,7 @@ A real-time chat application built with Rust, featuring WebSocket support, Postg
 - ✅ **Message History** - Pagination and storage
 - ✅ **Typing Indicators** - Real-time ephemeral typing status
 - ✅ **Read Receipts** - Message read status updates
-- 🐳 **Docker Ready** - Full Docker and docker-compose configuration
+- 🐳 **Docker Ready** - Full Docker and docker compose configuration
 - 🗄️ **PostgreSQL** - Robust database with migrations
 
 ## Tech Stack
@@ -48,7 +48,7 @@ cp .env.example .env
 
 3. **Build and run with Docker Compose**
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 The server will start at `http://localhost:8080`
@@ -134,7 +134,7 @@ chat_server/
 │   └── main.rs          # Application entry point
 ├── migrations/          # SQL migration files
 ├── Dockerfile           # Docker configuration
-├── docker-compose.yml   # Docker Compose setup
+├── docker compose.yml   # Docker Compose setup
 └── .env.example         # Environment template
 ```
 

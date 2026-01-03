@@ -52,7 +52,7 @@ curl -X POST http://localhost:8080/api/auth/register \
 # Connect using any PostgreSQL client:
 
 psql -h localhost -p 5432 -U postgres -d chat_db
-# Password: postgres (from docker-compose.yml)
+# Password: postgres (from docker compose.yml)
 
 # Or use a GUI tool like:
 # - pgAdmin: localhost:5432
@@ -245,7 +245,7 @@ docker compose exec db psql -U postgres -d chat_db
 # Find what's using port 8080
 lsof -i :8080
 
-# Kill the process or change port in docker-compose.yml
+# Kill the process or change port in docker compose.yml
 ```
 
 **Migrations fail:**

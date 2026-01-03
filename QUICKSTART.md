@@ -24,7 +24,7 @@ psql -h localhost -p 5432 -U postgres -d chat_db
 # Password: postgres
 
 # Using Docker
-docker-compose exec db psql -U postgres -d chat_db
+docker compose exec db psql -U postgres -d chat_db
 ```
 
 ## Test API

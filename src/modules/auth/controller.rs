@@ -86,7 +86,7 @@ pub async fn logout(
             if auth_str.starts_with("Bearer ") {
                 let token = &auth_str[7..];
                 match AuthService::logout(&pool, token).await {
-                    Ok(_) => return ApiResponse::success_no_data("Logged out successfully"),
+                    Ok(_) => return ApiResponse::<()>::success_no_data("Logged out successfully"),
                     Err(e) => {
                         log::error!("Logout error: {}", e);
                         return ErrorResponse::internal_error("Failed to logout");
